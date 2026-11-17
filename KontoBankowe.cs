@@ -8,16 +8,36 @@ namespace Bank_etap_pierwszy
     {
         private decimal _saldo;
 
-        private string _numer = ""; // generowany automatycznie przy tworzeniu konta
-
+        //private string _numer; // generowany automatycznie przy tworzeniu konta
+        
         public decimal Saldo
         {
             get { return _saldo; }
-            set { _saldo = value; }
+            private set { _saldo = value; }
         }
+
+        public void Wplac(decimal kwota)
+        {
+            Saldo += kwota;
+        }
+
         public string StanKonta()
         {
             return "Saldo: " + _saldo;
+        }
+
+        private static int _licznikKont = 0;
+        private readonly string _numer;
+
+        public KontoBankowe()
+        {
+            _licznikKont++;
+            _numer = "KONTO-" + _licznikKont;
+        }
+
+        public string Numer
+        {
+            get { return _numer; }
         }
     }
 }

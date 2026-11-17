@@ -12,10 +12,24 @@ namespace Bank_etap_pierwszy
             // Tworzenie automatu do wpłat
             Automat automat = new Automat();
 
+            automat.WrzucMonete(kontoBankowe, "5");
+            automat.WrzucMonete(kontoBankowe, "2");
+            automat.WrzucMonete(kontoBankowe, "1");
             automat.WrzucMonete(kontoBankowe, "0.5");
+            automat.WrzucMonete(kontoBankowe, "0.2");
+            automat.WrzucMonete(kontoBankowe, "3");
+            automat.WrzucMonete(kontoBankowe, "asd");
 
-            // Wyświetlamy stan konta (jeszcze nie zrobione)
+            Console.WriteLine();
+
             Console.WriteLine(kontoBankowe.StanKonta());
+            Console.WriteLine("Numer konta: " + kontoBankowe.Numer);
+            automat.PokazMonety();
+
+            Console.WriteLine();
+
+            KontoBankowe drugieKonto = new KontoBankowe();
+            Console.WriteLine("Numer drugiego konta: " + drugieKonto.Numer);
         }
     }
 }
