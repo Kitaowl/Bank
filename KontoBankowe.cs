@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bank_etap_pierwszy
+namespace Bank
 {
     internal class KontoBankowe
     {
@@ -16,9 +16,17 @@ namespace Bank_etap_pierwszy
             private set { _saldo = value; }
         }
 
+        private readonly List<decimal> _historiaWplat = new List<decimal>();
+
         public void Wplac(decimal kwota)
         {
             Saldo += kwota;
+            _historiaWplat.Add(kwota);
+        }
+
+        public string PobierzHistorie()
+        {
+            return string.Join(", ", _historiaWplat);
         }
 
         public string StanKonta()

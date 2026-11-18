@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
 
-namespace Bank_etap_pierwszy
+namespace Bank
 {
     internal class Automat
     {
@@ -59,6 +59,61 @@ namespace Bank_etap_pierwszy
                 sumaWszystkich += kvp.Key * kvp.Value;
             }
             Console.WriteLine($"Łączna wartość wszystkich monet: {sumaWszystkich} zł");
+        }
+        private readonly Dictionary<decimal, int> _maxPojemnosc = new Dictionary<decimal, int>()
+        {
+            { 5, 10 },
+            { 2, 10 },
+            { 1, 10 },
+            { 0.5m, 10 },
+            { 0.2m, 10 },
+            { 0.1m, 10 }
+        };
+
+        public void WrzucMonety(KontoBankowe konto, string ciagMonet)
+        {
+            string[] monety = ciagMonet.Split(' ');
+            int przyjeteSztuki = 0;
+            int zwroconeSztuki = 0;
+
+            foreach (string moneta in monety)
+            {
+                string monetaUjednoliconyZapis = moneta.Replace(",", ".");
+                bool czyUdanyParse = decimal.TryParse(monetaUjednoliconyZapis, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal wartoscMonety);
+
+                if (!czyUdanyParse)
+                {
+                    zwroconeSztuki++;
+                    continue;
+                }
+
+                bool czyZnanyNominal = false;
+                foreach (decimal nominal in _przyjmowaneMonety)
+                {
+                    if (wartoscMonety == nominal)
+                    {
+                        czyZnanyNominal = true;
+                        if (_iloscMonet[nominal] < _maxPojemnosc[nominal])
+                        {
+                            konto.Wplac(nominal);
+                            _iloscMonet[nominal]++;
+                            przyjeteSztuki++;
+                        }
+                        else
+                        {
+                            zwroconeSztuki++;
+                        }
+                        break;
+                    }
+                }
+
+                if (!czyZnanyNominal)
+                {
+                    zwroconeSztuki++;
+                }
+            }
+
+            Console.WriteLine($"Wrzuceno ciąg: \"{ciagMonet}\" -> Przyjęto monet: {przyjeteSztuki}, Zwrócono monet: {zwroconeSztuki}");
         }
     }
 }
